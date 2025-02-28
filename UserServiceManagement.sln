@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Server", "UserServiceManagement.Server\UserServiceManagement.Server.csproj", "{1C37D524-6C63-4A9D-BBD3-A2BE100BCFCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Data", "UserServiceManagement.Data\UserServiceManagement.Data.csproj", "{110F4A66-7CB7-409B-BBD6-081A8F672325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Services", "UserServiceManagement.Services\UserServiceManagement.Services.csproj", "{BB863612-42B7-4829-8B41-BCE19A4B8D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Contracts", "UserServiceManagement.Contracts\UserServiceManagement.Contracts.csproj", "{D7DCB4FC-A88F-435B-8904-FA74AAC674B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Utils", "UserServiceManagement.Utils\UserServiceManagement.Utils.csproj", "{AFD4671B-3E29-44BE-8491-D818376CDB9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceManagement.Models", "UserServiceManagement.Models\UserServiceManagement.Models.csproj", "{6F5F7359-95EC-4C6F-A89B-2D394B8DC355}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C37D524-6C63-4A9D-BBD3-A2BE100BCFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C37D524-6C63-4A9D-BBD3-A2BE100BCFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C37D524-6C63-4A9D-BBD3-A2BE100BCFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C37D524-6C63-4A9D-BBD3-A2BE100BCFCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{110F4A66-7CB7-409B-BBD6-081A8F672325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{110F4A66-7CB7-409B-BBD6-081A8F672325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{110F4A66-7CB7-409B-BBD6-081A8F672325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{110F4A66-7CB7-409B-BBD6-081A8F672325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB863612-42B7-4829-8B41-BCE19A4B8D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB863612-42B7-4829-8B41-BCE19A4B8D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB863612-42B7-4829-8B41-BCE19A4B8D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB863612-42B7-4829-8B41-BCE19A4B8D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7DCB4FC-A88F-435B-8904-FA74AAC674B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DCB4FC-A88F-435B-8904-FA74AAC674B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DCB4FC-A88F-435B-8904-FA74AAC674B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DCB4FC-A88F-435B-8904-FA74AAC674B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFD4671B-3E29-44BE-8491-D818376CDB9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFD4671B-3E29-44BE-8491-D818376CDB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFD4671B-3E29-44BE-8491-D818376CDB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFD4671B-3E29-44BE-8491-D818376CDB9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5F7359-95EC-4C6F-A89B-2D394B8DC355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5F7359-95EC-4C6F-A89B-2D394B8DC355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5F7359-95EC-4C6F-A89B-2D394B8DC355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5F7359-95EC-4C6F-A89B-2D394B8DC355}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
