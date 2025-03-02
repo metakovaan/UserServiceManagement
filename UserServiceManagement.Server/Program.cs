@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using UserServiceManagement.Contracts.Configurations;
 using UserServiceManagement.Contracts.Repositories;
 using UserServiceManagement.Contracts.Services;
+using UserServiceManagement.Data.Configurations;
 using UserServiceManagement.Data.Contexts;
+using UserServiceManagement.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +33,8 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 //Register Services
 builder.Services.AddScoped<IUserService, UserServiceManagement.Services.Services.UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

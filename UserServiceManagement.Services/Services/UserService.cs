@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using UserServiceManagement.Contracts.Repositories;
 using UserServiceManagement.Contracts.Services;
@@ -11,19 +10,33 @@ namespace UserServiceManagement.Services.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICloudinaryService _cloudinaryService;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepository, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, ILogger<UserService> logger, ICloudinaryService cloudinaryService)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _userRepository = userRepository;
+            _logger = logger;
+            _cloudinaryService = cloudinaryService;
         }
 
-        public async Task<ServiceResult> AddUser(User user)
+        public async Task<ServiceResult> AddUser(CreateUserRequest request)
         {
             try
             {
-                user.PasswordHash = PasswordHasher.HashPassword(user.PasswordHash);
+                var hashedPassword = PasswordHasher.HashPassword(request.Password);
+                var imageUrl = await UploadUserImageAsync(request.FormFile);
+
+                var user = new User
+                {
+                    Email = request.Email,
+                    PasswordHash = hashedPassword,
+                    ProfilePictureUrl = imageUrl,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName
+
+                };
+
                 var isSuccess = await _userRepository.AddUserAsync(user);
 
                 if (!isSuccess)
@@ -37,7 +50,7 @@ namespace UserServiceManagement.Services.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while adding user {Email}.", user.Email);
+                _logger.LogError(ex, $"Error occurred while adding user {request.Email}.");
                 return new ServiceResult { IsSuccess = false, Message = "An unexpected error occurred." };
             }
         }
@@ -102,6 +115,12 @@ namespace UserServiceManagement.Services.Services
                 _logger.LogError(ex, "Error occurred while logging in user {Email}.", request.Email);
                 return new ServiceResult { IsSuccess = false, Message = "An unexpected error occurred." };
             }
+        }
+
+        private async Task<string> UploadUserImageAsync(IFormFile formFile)
+        {
+            using var stream = formFile.OpenReadStream();
+            return await _cloudinaryService.UploadImageAsync(stream, formFile.FileName);
         }
     }
 }

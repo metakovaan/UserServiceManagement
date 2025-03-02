@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
 using UserServiceManagement.Contracts.Services;
 using UserServiceManagement.Models.Models;
 
@@ -19,18 +17,10 @@ namespace UserService.Server.Controllers
 
         [HttpPost]
         [Route("createuser")]
-        public async Task<IActionResult> CreateUser([FromBody]  CreateUserRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateUser([FromForm]  CreateUserRequest request)
         {
-            var user = new User
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                ProfilePictureUrl = request.ProfilePictureUrl,
-                PasswordHash = request.Password
-            };
-
-            await _userService.AddUser(user);
+            await _userService.AddUser(request);
 
             return Ok();
         }
