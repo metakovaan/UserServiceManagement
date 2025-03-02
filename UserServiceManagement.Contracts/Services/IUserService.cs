@@ -4,9 +4,9 @@ namespace UserServiceManagement.Contracts.Services
 {
     public interface IUserService
     {
-        Task AddUser(User user);
-        Task<User> GetUserByEmail(string userEmail);
-        Task<IEnumerable<User>> GetAllUsers();
-        Task DeleteUser(string userEmail);
+        Task<ServiceResult> AddUser(User user);
+        Task<ServiceResult> GetUserByEmail(string userEmail);
+        Task<ServiceResult> DeleteUser(string userEmail);
+        Task<ServiceResult> LoginUser(LoginUserRequest request);
     }
 }

@@ -19,9 +19,20 @@ namespace UserService.Server.Controllers
 
         [HttpPost]
         [Route("createuser")]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
+        public async Task<IActionResult> CreateUser([FromBody]  CreateUserRequest request)
         {
-            return CreatedAtAction(nameof(GetUserById), new { id = userDto.FirstName }, userDto);
+            var user = new User
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                ProfilePictureUrl = request.ProfilePictureUrl,
+                PasswordHash = request.Password
+            };
+
+            await _userService.AddUser(user);
+
+            return Ok();
         }
 
         [HttpGet]
@@ -45,12 +56,13 @@ namespace UserService.Server.Controllers
             return NoContent();
         }
 
-        private string HashPassword(string password)
+        [HttpPost]
+        [Route("loginuser")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
         {
-            using var sha256 = SHA256.Create();
-            var bytes = Encoding.UTF8.GetBytes(password);
-            var hash = sha256.ComputeHash(bytes);
-            return Convert.ToBase64String(hash);
+            var result = await _userService.LoginUser(request);
+
+            return Ok(result);
         }
     }
 }

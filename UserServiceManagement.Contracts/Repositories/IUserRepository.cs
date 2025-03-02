@@ -4,9 +4,9 @@ namespace UserServiceManagement.Contracts.Repositories
 {
     public interface IUserRepository
     {
-        Task AddUser(User user);
-        Task<User> GetUserByEmail(string userEmail);
-        Task<List<User>> GetAllUsers();
-        Task<bool> DeleteUser(string userEmail);
+        Task<bool> AddUserAsync(User user);
+        Task<User?> GetUserByEmailAsync(string userEmail);
+        Task<bool> DeleteUserAsync(string email);
+        Task<bool> UpdateUserAsync(User user);
     }
 }

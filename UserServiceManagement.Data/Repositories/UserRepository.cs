@@ -1,53 +1,125 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 using UserServiceManagement.Contracts.Repositories;
 using UserServiceManagement.Data.Contexts;
 using UserServiceManagement.Models.Models;
 
-namespace UserServiceManagement.Data.Repositories
+public class UserRepository : IUserRepository
 {
-    public class UserRepository : IUserRepository
+    private readonly ApplicationDbContext _dbContext;
+    private readonly ILogger<UserRepository> _logger;
+
+    public UserRepository(ApplicationDbContext dbContext, ILogger<UserRepository> logger)
     {
-        private readonly ApplicationDbContext DbContext;
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
-        public UserRepository(ApplicationDbContext applicationDbContext)
+    /// <summary>
+    /// Retrieves a user by their email address.
+    /// </summary>
+    /// <param name="userEmail">Email address of the user</param>
+    /// <returns>User object if found, otherwise null</returns>
+    public async Task<User?> GetUserByEmailAsync(string userEmail)
+    {
+        if (string.IsNullOrWhiteSpace(userEmail))
         {
-            DbContext = applicationDbContext;
+            _logger.LogWarning("Attempted to retrieve user with an empty email.");
+            return null;
         }
 
-        public async Task AddUser(User user)
+        try
         {
-            await DbContext.Users.AddAsync(user);
-            await DbContext.SaveChangesAsync();
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while retrieving user by email: {Email}", userEmail);
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Adds a new user to the database.
+    /// </summary>
+    /// <param name="user">User object to add</param>
+    /// <returns>True if successful, otherwise false</returns>
+    public async Task<bool> AddUserAsync(User user)
+    {
+        if (user == null)
+        {
+            _logger.LogWarning("Attempted to add a null user.");
+            return false;
         }
 
-        public async Task<bool> DeleteUser(string userEmail)
+        try
         {
-            var user = await DbContext.Users.FindAsync(userEmail);
-            if (user == null)
-            {
-                return false;
-            }
-              
-            DbContext.Users.Remove(user);
-            await DbContext.SaveChangesAsync();
-
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("User {Email} added successfully.", user.Email);
             return true;
         }
-
-        public Task<List<User>> GetAllUsers()
+        catch (Exception ex)
         {
-            return DbContext.Users.ToListAsync();
+            _logger.LogError(ex, "Error occurred while adding user {Email}.", user.Email);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Updates an existing user in the database.
+    /// </summary>
+    /// <param name="user">Updated user object</param>
+    /// <returns>True if successful, otherwise false</returns>
+    public async Task<bool> UpdateUserAsync(User user)
+    {
+        if (user == null)
+        {
+            _logger.LogWarning("Attempted to update a null user.");
+            return false;
         }
 
-        public async Task<User> GetUserByEmail(string userEmail)
+        try
         {
-            var user =  await DbContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(userEmail));
-            if (user is not null)
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("User {Email} updated successfully.", user.Email);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while updating user {Email}.", user.Email);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Deletes a user from the database.
+    /// </summary>
+    /// <param name="user">User object to delete</param>
+    /// <returns>True if successful, otherwise false</returns>
+    public async Task<bool> DeleteUserAsync(string email)
+    {
+        try
+        {
+            var user = await GetUserByEmailAsync(email);
+            if (user == null)
             {
-                return user;
+                _logger.LogWarning("User {Email} not found or could not be deleted.", email);
+                return false;
             }
 
-            return new User();
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("User {Email} deleted successfully.", user.Email);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while deleting user {Email}.", email);
+            return false;
         }
     }
 }
