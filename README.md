@@ -17,4 +17,8 @@ This is a **.NET 7.0** backend for user authentication, handling **user registra
 2. **Build and Start Project**
   ```sh
   dotnet build
-  dotnet run
+
+3. **Start Server**
+```sh
+cd UserServiceManagement.Server
+dotnet run
